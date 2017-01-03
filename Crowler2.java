@@ -10,12 +10,21 @@ public class Crowler2 {
 	RobotRAM.toDownload.addPage(new URL("http://www.google.pl/"));
 	r.threadNumer = 1;
 	r.start();
-	g.threadNumer = 3;
+	sleep();
+	g.threadNumer = 2;
 	g.start();
-	b.threadNumer = 2;
+	sleep();
+	b.threadNumer = 3;
 	b.start();
 		/*Downloader d = new Downloader();
 		URL l = new URL("http://www.kis.agh.edu.pl/");
 		System.out.println(d.downloadPage(l));*/
+	}
+	static void sleep(){
+		try{
+			Thread.sleep(1000);
+		}catch(Exception e){
+			
+		}
 	}
 }

@@ -10,33 +10,34 @@ public class RobotRAM extends Thread {
 	static DownloadQueue toDownload = new DownloadQueueRAM();
 	static VisitedPages visited = new VisitedPagesRAM();
 	int threadNumer = 0;
+
 	public void run() {
 		List<URL> tmpLinks = new ArrayList<URL>();
 		URL tmpURL;
 		System.out.println("entered RUN");
 		while (true) {
 			try {
-					tmpURL = toDownload.getNextPage();
-					System.out.println(threadNumer);
-					System.out.println(tmpURL.toString());
-					//System.out.println(!visited.pageAlreadyVisited(tmpURL));
-					
-					if (!visited.pageAlreadyVisited(tmpURL)) {
-						tmpLinks.addAll(linki(downloader.downloadPage(tmpURL)));
-						//System.out.println(tmpLinks);
-						visited.addVisitedPage(tmpURL);
-						while(!tmpLinks.isEmpty()){							
-							//System.out.println( tmpLinks.get(0).toString());
-							toDownload.addPage(tmpLinks.get(0));
-							tmpLinks.remove(0);
-						}
+				tmpURL = toDownload.getNextPage();
+				System.out.println(threadNumer);
+				System.out.println(tmpURL.toString());
+				// System.out.println(!visited.pageAlreadyVisited(tmpURL));
 
-				}else{
+				if (!visited.pageAlreadyVisited(tmpURL)) {
+					tmpLinks.addAll(linki(downloader.downloadPage(tmpURL)));
+					// System.out.println(tmpLinks);
+					visited.addVisitedPage(tmpURL);
+					while (!tmpLinks.isEmpty()) {
+						// System.out.println( tmpLinks.get(0).toString());
+						toDownload.addPage(tmpLinks.get(0));
+						tmpLinks.remove(0);
+					}
+
+				} else {
 					System.out.println("sleep");
 					Thread.sleep(1000);
 				}
 			} catch (Exception e) {
-				System.out.println("Wrong web page");
+
 			}
 		}
 	}
