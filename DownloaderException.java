@@ -1,3 +1,4 @@
+package crowler;
 
 public class DownloaderException extends Exception{
 

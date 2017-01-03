@@ -1,3 +1,4 @@
+package crowler;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,12 +35,12 @@ public class DownloadQueueRAM implements DownloadQueue {
 				return result;
 			}
 		}
-		//sleep();
-		return null;
+		sleep();
+		return getNextPage();
 	}
-	void sleep(){
+	private final static void sleep(){
 		try {
-			Thread.sleep(10);
+			Thread.sleep(100);
 		} catch (InterruptedException e) {
 
 		}

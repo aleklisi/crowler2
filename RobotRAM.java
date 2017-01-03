@@ -1,3 +1,5 @@
+package crowler;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -6,10 +8,39 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RobotRAM extends Thread {
-	static WWWPageDownloader downloader = new Downloader();
-	static DownloadQueue toDownload = new DownloadQueueRAM();
-	static VisitedPages visited = new VisitedPagesRAM();
-	int threadNumer = 0;
+	private static WWWPageDownloader downloader = new Downloader();
+	// socket version
+	// private static WWWPageDownloader downloader = new SocketDownloader();
+	 //private static DownloadQueue toDownload = new DownloadQueueRAM();
+	 //private static VisitedPages visited = new VisitedPagesRAM();
+	private static VisitedPages visited;
+	private static DownloadQueue toDownload;
+
+	private int threadNumer = 0;
+
+	RobotRAM(int threadNumer) {
+		this.threadNumer = threadNumer;
+		if (visited == null) {
+			try {
+				visited = new DataBaseVisited();
+				toDownload = new DataBaseToVisitQueue();
+			} catch (Exception e) {
+			}
+		}
+	}
+
+	RobotRAM(int threadNumer, URL seed) {
+		this.threadNumer = threadNumer;
+		if (visited == null) {
+			try {
+				visited = new DataBaseVisited();
+				toDownload = new DataBaseToVisitQueue();
+			} catch (Exception e) {
+
+			}
+		}
+		toDownload.addPage(seed);
+	}
 
 	public void run() {
 		List<URL> tmpLinks = new ArrayList<URL>();
@@ -24,7 +55,7 @@ public class RobotRAM extends Thread {
 
 				if (!visited.pageAlreadyVisited(tmpURL)) {
 					tmpLinks.addAll(linki(downloader.downloadPage(tmpURL)));
-					// System.out.println(tmpLinks);
+					 System.out.println(tmpLinks);
 					visited.addVisitedPage(tmpURL);
 					while (!tmpLinks.isEmpty()) {
 						// System.out.println( tmpLinks.get(0).toString());
@@ -33,7 +64,7 @@ public class RobotRAM extends Thread {
 					}
 
 				} else {
-					System.out.println("sleep");
+					//System.out.println("sleep");
 					Thread.sleep(1000);
 				}
 			} catch (Exception e) {
@@ -42,7 +73,7 @@ public class RobotRAM extends Thread {
 		}
 	}
 
-	List<URL> linki(String strona) {
+	private List<URL> linki(String strona) {
 		List<URL> wynik = new ArrayList<URL>();
 		String wzor = "<[aA] [^>]*[hH][rR][eE][fF]=\"([^\"]+)\"";
 		Pattern p = Pattern.compile(wzor);
