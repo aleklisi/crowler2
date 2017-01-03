@@ -9,36 +9,18 @@ import java.util.regex.Pattern;
 
 public class RobotRAM extends Thread {
 	private static WWWPageDownloader downloader = new Downloader();
-	// socket version
-	// private static WWWPageDownloader downloader = new SocketDownloader();
-	 //private static DownloadQueue toDownload = new DownloadQueueRAM();
-	 //private static VisitedPages visited = new VisitedPagesRAM();
-	private static VisitedPages visited;
-	private static DownloadQueue toDownload;
+	private static DownloadQueue toDownload = new DownloadQueueRAM();
+	private static VisitedPages visited = new VisitedPagesRAM();
 
 	private int threadNumer = 0;
 
 	RobotRAM(int threadNumer) {
 		this.threadNumer = threadNumer;
-		if (visited == null) {
-			try {
-				visited = new DataBaseVisited();
-				toDownload = new DataBaseToVisitQueue();
-			} catch (Exception e) {
-			}
-		}
 	}
 
 	RobotRAM(int threadNumer, URL seed) {
 		this.threadNumer = threadNumer;
-		if (visited == null) {
-			try {
-				visited = new DataBaseVisited();
-				toDownload = new DataBaseToVisitQueue();
-			} catch (Exception e) {
 
-			}
-		}
 		toDownload.addPage(seed);
 	}
 
@@ -55,7 +37,7 @@ public class RobotRAM extends Thread {
 
 				if (!visited.pageAlreadyVisited(tmpURL)) {
 					tmpLinks.addAll(linki(downloader.downloadPage(tmpURL)));
-					 System.out.println(tmpLinks);
+					//System.out.println(tmpLinks);
 					visited.addVisitedPage(tmpURL);
 					while (!tmpLinks.isEmpty()) {
 						// System.out.println( tmpLinks.get(0).toString());
@@ -64,7 +46,7 @@ public class RobotRAM extends Thread {
 					}
 
 				} else {
-					//System.out.println("sleep");
+					// System.out.println("sleep");
 					Thread.sleep(1000);
 				}
 			} catch (Exception e) {
