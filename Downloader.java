@@ -6,11 +6,12 @@ import java.net.URLConnection;
 public class Downloader implements WWWPageDownloader {
 
 	@Override
-	public String downloadPage(String pageURL) throws DownloaderException {
+	public String downloadPage(URL pageURL) throws DownloaderException {
 		StringBuilder wynik = new StringBuilder();
+		//System.out.println("entered Downloader");
 		try {
 			// System.out.println("1");
-			URL oracle = new URL(pageURL);
+			URL oracle = pageURL;
 			URLConnection yc = oracle.openConnection();
 			BufferedReader in = new BufferedReader(new InputStreamReader(yc.getInputStream()));
 			String inputLine;

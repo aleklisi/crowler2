@@ -1,3 +1,5 @@
+import java.net.URL;
+
 /*
  * Interfejs do pobierania stron WWW z internetu.
  */
@@ -11,5 +13,5 @@ public interface WWWPageDownloader {
      *         adresie, wystapil blad I/O podczas pobierania itp.)
      *
      */
-     String downloadPage(String pageURL) throws DownloaderException;
+     String downloadPage(URL pageURL) throws DownloaderException;
 }

@@ -1,9 +1,9 @@
 import java.net.URL;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DownloadQueueRAM implements DownloadQueue {
-	static Set<URL> toVisit = new HashSet<URL>();
+	static List<URL> toVisit = new ArrayList<URL>();
 
 	@Override
 	public void addPage(URL pageURL) {
@@ -28,14 +28,21 @@ public class DownloadQueueRAM implements DownloadQueue {
 	@Override
 	public URL getNextPage() {
 		synchronized (toVisit) {
-			if(isEmpty()){
-				try{
-					Thread.sleep(5);
-				}catch(Exception e){					
-				}
+			if(!isEmpty()){
+				URL result = toVisit.get(0);
+				toVisit.remove(0);
+				return result;
 			}
 		}
+		//sleep();
 		return null;
+	}
+	void sleep(){
+		try {
+			Thread.sleep(10);
+		} catch (InterruptedException e) {
+
+		}
 	}
 
 }

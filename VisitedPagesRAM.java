@@ -1,14 +1,14 @@
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class VisitedPagesRAM implements VisitedPages {
 
-	static List<URL> visited = new ArrayList<URL>();
+	static Set<URL> visited = new HashSet<URL>();
 	@Override
 	public boolean pageAlreadyVisited(URL pageURL) {
 		synchronized (visited) {
-		if(!visited.contains(pageURL))
+		if(visited.contains(pageURL))
 			return true;
 		}
 		return false;
